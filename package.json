@@ -1,0 +1,22 @@
+{
+  "name": "mern_blog",
+  "version": "1.0.0",
+  "description": "a simple mern blog",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github-frankhernandez01:frankhernandez01/mern_blog.git"
+  },
+  "author": "fhern077",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongoose": "^5.1.7",
+    "passport": "^0.4.0"
+  }
+}
