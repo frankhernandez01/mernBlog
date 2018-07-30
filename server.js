@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 const mongoSanitize = require('express-mongo-sanitize');
 const { posts, profile, users } = require('./routes/api');
 
@@ -22,8 +23,10 @@ mongoose
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
 
-// Base End Point (HealthCheck)
-app.get('/', (req, res) => { res.send('hello world') });
+//passport middleware 
+app.use(passport.initialize());
+
+//
 
 // Use routes
 app.use('/api/users', users);

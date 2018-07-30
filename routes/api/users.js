@@ -56,7 +56,7 @@ router.post('/register', (req, res) => {
 // @acess Public
 // @returns 404 when a user is not found 
 // @returns 400 when a password is incorrect 
-// @returns 200 when a user is sucessfully logged in 
+// @returns 200 when a user is sucessfully logged in with a bearer token
 // @returns 500 incase of any errors
 
 router.post('/login', (req, res) => {
@@ -71,17 +71,17 @@ router.post('/login', (req, res) => {
             user.comparePassword(password)
                 .then(isMatch => {
                     if (isMatch) {
-                        //User matched 
                         const payload = { id: user.id, name: user.name, avatar: user.avatar } // created JWT payload
                         jwt.sign(
                             payload,
                             keys.secretOrPrivateKey,
+                            { algorithm: 'RS256'},
                             { expiresIn: 7200 },
                             (err, token) => {
                                 res.json({
                                     sucess: true,
                                     token: 'Bearer ' + token
-                                })
+                                });
                             });
                     } else {
                         return res.status(400).json({ password: 'Password incorrect' })
