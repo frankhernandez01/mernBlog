@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const passport = require('passport');
 const mongoSanitize = require('express-mongo-sanitize');
 const { posts, profile, users } = require('./routes/api');
 
@@ -23,13 +22,11 @@ mongoose
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
 
-//passport middleware 
-app.use(passport.initialize());
-
-//
-
-// Use routes
 app.use('/api/users', users);
+
+const authCheck = require('./middleware/authCheck');
+app.use('/api', authCheck);
+// Use routes
 app.use('/api/profile', profile);
 app.use('/api/posts', posts);
 
