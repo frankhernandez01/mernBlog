@@ -1,6 +1,4 @@
 const isEmpty = (value) => {
-    console.log('this is the value:');
-    console.log(value);
     return (
         value === undefined ||
         value === null ||
