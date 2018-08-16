@@ -4,7 +4,11 @@ const gravatar = require('gravatar');
 const jwt = require('jsonwebtoken');
 // Require the user 
 const User = require('../../models/User');
+// Require the secret sauce
 const keys = require('../../config/keys');
+
+// Load Input Validators for Registration
+const validateRegisterInput = require('../../helpers/validators/register');
 
 // @route GET api/users/test
 // @desc Tests the users route
@@ -20,8 +24,15 @@ router.get('/test', (req, res) => {
 // @returns 409 conflict the request could not be completed due to a conflict with the current state of the resource
 // @returns 201 for a new user sucesfully created
 // @returns 500 some db save error 
+// @returns 400 for invalid input on req.body
 
 router.post('/register', (req, res) => {
+    // Check validation on request body 
+    const { errors, isValid } = validateRegisterInput(req.body);
+    console.log(isValid);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
     // deconstruct values from body 
     const { email, name, password } = req.body
     User.findOne({ email: email })

@@ -23,6 +23,7 @@
     "gravatar": "^1.6.0",
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.1.7",
-    "passport": "^0.4.0"
+    "passport": "^0.4.0",
+    "validator": "^10.5.0"
   }
 }

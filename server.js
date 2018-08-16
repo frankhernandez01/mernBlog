@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const { posts, profile, users } = require('./routes/api');
 
+
 // Base requirements
 const app = express();
 const PORT = process.env.port || 5001;
