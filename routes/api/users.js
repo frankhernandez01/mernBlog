@@ -9,7 +9,7 @@ const keys = require('../../config/keys');
 
 // Load Input Validators for Registration
 const validateRegisterInput = require('../../helpers/validators/register');
-
+const validateLoginInput = require('../../helpers/validators/login');
 // @route GET api/users/test
 // @desc Tests the users route
 // @acess Public
@@ -29,7 +29,6 @@ router.get('/test', (req, res) => {
 router.post('/register', (req, res) => {
     // Check validation on request body 
     const { errors, isValid } = validateRegisterInput(req.body);
-    console.log(isValid);
     if (!isValid) {
         return res.status(400).json(errors);
     }
@@ -38,7 +37,8 @@ router.post('/register', (req, res) => {
     User.findOne({ email: email })
         .then(user => {
             if (user) {
-                return res.status(409).json({ email: 'email already registered' });
+                errors.email = 'email already registered'
+                return res.status(409).json(errors);
             } else {
                 const avatar = gravatar.url(email, {
                     s: '200', //the size
@@ -56,7 +56,8 @@ router.post('/register', (req, res) => {
                     .then(user => res.status(201).json(user))
                     .catch(err => {
                         console.log(err)
-                        res.status('500').json({ db: 'an error has occured in saving in the db' })
+                        errors.db = 'an error has occured in saving in the db' 
+                        res.status('500').json(errors)
                     });
             }
         });
@@ -71,13 +72,19 @@ router.post('/register', (req, res) => {
 // @returns 500 incase of any errors
 
 router.post('/login', (req, res) => {
+    // Check validation on request body 
+    const { errors, isValid } = validateLoginInput(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
     const { email, password } = req.body
     //short hand for email:email
     User.findOne({ email })
         .then(user => {
             //check for user 
             if (!user) {
-                return res.status(404).json({ user: 'User not found' });
+                errors.user= 'User not found';
+                return res.status(404).json(errors);
             }
             user.comparePassword(password)
                 .then(isMatch => {
@@ -94,7 +101,8 @@ router.post('/login', (req, res) => {
                                 });
                             });
                     } else {
-                        return res.status(400).json({ password: 'Password incorrect' })
+                        errors.password = 'Password incorrect';
+                        return res.status(400).json(errors)
                     }
                 })
                 .catch(err => {
